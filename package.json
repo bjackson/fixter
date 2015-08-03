@@ -1,0 +1,25 @@
+{
+  "name": "fixproto",
+  "version": "0.0.0",
+  "description": "An iojs implementation of the FIX protocol.",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "mocha --compilers js:babel/register"
+  },
+  "keywords": [
+    "FIX"
+  ],
+  "author": "Brett Jackson",
+  "license": "SEE LICENSE IN license.md",
+  "dependencies": {
+    "lodash": "^3.10.0"
+  },
+  "devDependencies": {
+    "babel": "^5.8.20",
+    "chai": "^3.2.0",
+    "gulp": "^3.9.0",
+    "gulp-mocha": "^2.1.3",
+    "harmonize": "^1.4.4",
+    "mocha": "^2.2.5"
+  }
+}
