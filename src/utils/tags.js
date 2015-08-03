@@ -1655,4 +1655,4 @@ const tags = {
 
 const reverseTags = _.invert(tags);
 
-export { tags as default, reverseTags as reverseTags };
+export { tags as tags, reverseTags as reverseTags };

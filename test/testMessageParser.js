@@ -10,27 +10,27 @@
   const MessageBuilder = require('../src/utils/messageBuilder');
   const MessageParser = require('../src/utils/messageParser');
 
-  describe('MessageBuilder', function () {
-    it('should parse a simple message', function () {
-      let expectedMessage = '1=BJACKSON' + soh + "37=ORDER1" + soh;
+  describe('MessageParser', function () {
+    it('should parse a FIX string', function () {
+      let messageString = '1=BJACKSON' + soh + "37=ORDER1" + soh;
       let orderObject = {
         Account: "BJACKSON",
         OrderID: "ORDER1"
       };
 
-      let messageString = MessageBuilder.createFIXstring(orderObject);
-      expect(messageString).to.eql(expectedMessage);
+      let messageObject = MessageParser.parseFIXstring(messageString);
+      expect(messageObject).to.eql(orderObject);
     });
 
-    it('should build a FIX string with duplicate values', function () {
+    it('should parse a FIX string with duplicate values', function () {
       let messageString = '1=BJACKSON' + soh + "37=ORDER1" + soh + "37=ORDER2" + soh;
       let orderObject = {
         Account: "BJACKSON",
         OrderID: ["ORDER1", "ORDER2"]
       };
 
-      let messageStringResult = MessageBuilder.createFIXstring(orderObject);
-      expect(messageStringResult).to.eql(messageString);
+      let messageObject = MessageParser.parseFIXstring(messageString);
+      expect(messageObject).to.eql(orderObject);
     });
   });
 }());
