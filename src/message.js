@@ -1,11 +1,11 @@
 import * as MessageBuilder from './utils/messageBuilder';
 
 export default class Message {
-  constructor(options) {
+  constructor(options, msgType, client) {
     if (typeof options === 'string') {
       this.body = options;
     } else if (typeof options === 'object') {
-      this.body = MessageBuilder.createMessage(options);
+      this.body = MessageBuilder.createMessage(options, msgType, client);
     }
   }
 
@@ -14,6 +14,6 @@ export default class Message {
   }
 
   toFIX() {
-    
+
   }
 }
