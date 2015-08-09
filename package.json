@@ -1,6 +1,6 @@
 {
   "name": "fixter",
-  "version": "0.0.0",
+  "version": "0.0.2",
   "description": "An iojs implementation of the FIX protocol.",
   "main": "src/index.js",
   "scripts": {
