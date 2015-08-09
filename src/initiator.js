@@ -26,6 +26,7 @@ export default class Initiator extends EventEmitter {
         this.takeActionOnMessage(messageType, message);
       });
       socket.on('error', (err) => {
+        console.log(err.toString());
         reject(err);
       });
     });
@@ -39,13 +40,21 @@ export default class Initiator extends EventEmitter {
     let message = new Message(messageObject, reverseMsgTypes.Logon, this);
   }
 
-  takeActionOnMessage(messageType, data) {
-    switch (messageType) {
-      case 'Logon':
-        this.emit('logon', data);
-        break;
-      default:
-        this.emit('error', data);
-    }
+  takeActionOnMessage(messageType, message) {
+    this.emit(messageType, message);
+    // switch (messageType) {
+    //   case 'Logon':
+    //     this.emit('IOI', message);
+    //     break;
+    //   case 'Logon':
+    //     this.emit('Logon', message);
+    //     break;
+    //   case 'IOI':
+    //     this.emit('IOI', message);
+    //     break;
+    //   default:
+    //     //console.log(`UNHANDLED MSG TYPE: ${messageType}`);
+    //     this.emit('unknown', message);
+    // }
   }
 }
