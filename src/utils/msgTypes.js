@@ -121,6 +121,6 @@ const msgTypes = {
   'z': 'DerivativeSecurityListRequest'
 };
 
-const reverseTags = _.invert(msgTypes);
+const reverseMsgTypes = _.invert(msgTypes);
 
 export { msgTypes as msgTypes, reverseMsgTypes as reverseMsgTypes };

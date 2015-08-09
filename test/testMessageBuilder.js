@@ -9,6 +9,9 @@
 
   const MessageBuilder = require('../src/utils/messageBuilder');
   const MessageParser = require('../src/utils/messageParser');
+  const Initiator = require('../src/initiator');
+
+  let options = require('./options');
 
   describe('MessageBuilder', function () {
     it('should parse a simple message', function () {
@@ -18,7 +21,9 @@
         OrderID: "ORDER1"
       };
 
-      let messageString = MessageBuilder.createFIXstring(orderObject);
+      let initiator = new Initiator(options);
+
+      let messageString = MessageBuilder.createFIXstring(orderObject, 'IOI', initiator);
       expect(messageString).to.eql(expectedMessage);
     });
 
@@ -29,7 +34,9 @@
         OrderID: ["ORDER1", "ORDER2"]
       };
 
-      let messageStringResult = MessageBuilder.createFIXstring(orderObject);
+      let initiator = new Initiator(options);
+
+      let messageStringResult = MessageBuilder.createFIXstring(orderObject, 'IOI', initiator);
       expect(messageStringResult).to.eql(messageString);
     });
   });

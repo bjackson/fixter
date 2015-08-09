@@ -6,6 +6,7 @@ export default class Initiator {
   constructor(options) {
     this.options = options;
     this.HeartBtInt = options.HeartBtInt;
+    this.sequenceNumber = 1;
   }
 
   connect() {
