@@ -2,7 +2,7 @@
 
 Fixter is a Node.js library to interact with the FIX protocol.
 
-Pull requests greatly welcomed.
+Pull requests and new tests are greatly welcomed.
 
 ## Example usage
 When messages are received, they are emitted as events on the Initiator object. For example:
