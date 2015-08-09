@@ -14,6 +14,10 @@ export function getNumberForMessageType(tag) {
 export function createFIXstring(messageObject, msgType, client) {
   let bodyArray = [];
 
+  let now = new Date();
+  let sendingTime = new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(),  now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds(), now.getUTCMilliseconds());
+  let sendingTimeString = (1900 + sendingTime.getYear()) + pad('00', sendingTime.getMonth() + 1, true) + pad('00', sendingTime.getDate(), true) + '-' + pad('00', sendingTime.getHours(), true) + ':' + pad('00', sendingTime.getMinutes(), true) + ':' + pad('00', sendingTime.getSeconds(), true) + '.' + pad('000', sendingTime.getMilliseconds(), false);
+
   bodyArray.push(getNumberForTag('MsgType'));
   bodyArray.push('=');
   bodyArray.push(getNumberForMessageType(msgType));
@@ -23,10 +27,6 @@ export function createFIXstring(messageObject, msgType, client) {
   bodyArray.push('=');
   bodyArray.push(client.sequenceNumber);
   bodyArray.push(soh);
-
-  let now = new Date();
-  let sendingTime = new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(),  now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds(), now.getUTCMilliseconds());
-  let sendingTimeString = (1900 + sendingTime.getYear()) + pad('00', sendingTime.getMonth() + 1, true) + pad('00', sendingTime.getDate(), true) + '-' + pad('00', sendingTime.getHours(), true) + ':' + pad('00', sendingTime.getMinutes(), true) + ':' + pad('00', sendingTime.getSeconds(), true) + '.' + pad('000', sendingTime.getMilliseconds(), false);
 
   bodyArray.push(getNumberForTag('SendingTime'));
   bodyArray.push('=');

@@ -9,6 +9,7 @@
 
   const Initiator = require('../src/initiator');
   const MessageBuilder = require('../src/utils/messageBuilder');
+  const revTags = require('../src/utils/tags').reverseTags;
 
   // let options = {
   //   host: 'localhost',
@@ -19,7 +20,7 @@
   // };
 
   let options = require('./options');
-  console.log(options);
+  //console.log(options);
 
   describe('Initiator', function () {
     it.skip('should connect', function (done) {
@@ -56,11 +57,11 @@
     });
 
     it('should send a logon', function (done) {
-
+      this.timeout(2000);
       let initiator = new Initiator(options);
 
       let logonOptions = {
-        EncryptMethod: '0',
+        EncryptMethod: 0,
         HeartBtInt: 30
       };
 
@@ -71,7 +72,7 @@
         .then(function (result) {
           expect(result).to.eql(true);
           initiator.send(messageString);
-          done();
+          //done();
         })
         .catch(function (err) {
           console.log(err);

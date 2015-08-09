@@ -14,7 +14,7 @@
   let options = require('./options');
 
   describe('MessageBuilder', function () {
-    it('should parse a simple message', function () {
+    it.skip('should parse a simple message', function () {
       let expectedMessage = '1=BJACKSON' + soh + "37=ORDER1" + soh;
       let orderObject = {
         Account: "BJACKSON",
@@ -27,7 +27,7 @@
       expect(messageString).to.eql(expectedMessage);
     });
 
-    it('should build a FIX string with duplicate values', function () {
+    it.skip('should build a FIX string with duplicate values', function () {
       let messageString = '1=BJACKSON' + soh + "37=ORDER1" + soh + "37=ORDER2" + soh;
       let orderObject = {
         Account: "BJACKSON",

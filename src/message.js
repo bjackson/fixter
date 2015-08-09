@@ -1,19 +1,24 @@
 import * as MessageBuilder from './utils/messageBuilder';
+import * as MessageParser from './utils/MessageParser';
 
 export default class Message {
-  constructor(options, msgType, client) {
-    if (typeof options === 'string') {
-      this.body = options;
-    } else if (typeof options === 'object') {
-      this.body = MessageBuilder.createMessage(options, msgType, client);
+  constructor(body, msgType, client) {
+    if (typeof body === 'string') {
+      this.body = body;
+      this.message = MessageParser.parseFIXstring(body);
+    } else if (typeof body === 'object') {
+      this.message = body;
+      this.body = MessageBuilder.createMessage(body, msgType, client);
+    } else {
+      throw body;
     }
   }
 
   toJSON() {
-
+    return this.message;
   }
 
   toFIX() {
-
+    return this.body;
   }
 }
