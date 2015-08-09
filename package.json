@@ -1,5 +1,5 @@
 {
-  "name": "fixproto",
+  "name": "fixter",
   "version": "0.0.0",
   "description": "An iojs implementation of the FIX protocol.",
   "main": "src/index.js",
@@ -10,7 +10,7 @@
     "FIX"
   ],
   "author": "Brett Jackson",
-  "license": "SEE LICENSE IN license.md",
+  "license": "BSD",
   "dependencies": {
     "lodash": "^3.10.0"
   },
