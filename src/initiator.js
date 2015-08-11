@@ -7,7 +7,6 @@ export default class Initiator extends EventEmitter {
   constructor(options) {
     super();
     this.options = options;
-    this.HeartBtInt = options.HeartBtInt;
     this.sequenceNumber = 1;
   }
 
@@ -16,6 +15,7 @@ export default class Initiator extends EventEmitter {
       let socket = net.connect(this.options.port, this.options.host);
       this.socket = socket;
       socket.on('connect', () => {
+        setInterval(() => this.sendHeartbeat, this.options.HeartBtInt * 1000);
         resolve(true);
       });
       socket.on('data', (data) => {
@@ -37,11 +37,21 @@ export default class Initiator extends EventEmitter {
   }
 
   logon() {
+    console.log('logged on');
     let message = new Message(messageObject, reverseMsgTypes.Logon, this);
   }
 
   takeActionOnMessage(messageType, message) {
     this.emit(messageType, message);
+    switch (messageType) {
+      case 'TestRequest':
+        let testResponse = new Message({TestReqID: message.TestReqID}, 'TestRequest', this);
+        this.send(testResponse.toFIX());
+        break;
+      default:
+
+    }
+
     // switch (messageType) {
     //   case 'Logon':
     //     this.emit('IOI', message);
@@ -55,6 +65,11 @@ export default class Initiator extends EventEmitter {
     //   default:
     //     //console.log(`UNHANDLED MSG TYPE: ${messageType}`);
     //     this.emit('unknown', message);
-    // }
+    //}
+  }
+
+  sendHeartbeat() {
+    let heartbeat = new Message({}, 'Heartbeat', this);
+    this.send(heartbeat);
   }
 }
