@@ -14,3 +14,6 @@ initiator.on('IOI', function(message) {
   console.log('New IOI for ${message.Symbol}. Price: ${message.Price}');
 });
 ```
+
+## SSL support
+To use SSL, set `SSL` to true in your Initiator's options.
