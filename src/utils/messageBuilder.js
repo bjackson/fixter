@@ -11,52 +11,64 @@ export function getNumberForMessageType(tag) {
   return ReverseMessageTypes[tag];
 }
 
-export function createFIXstring(messageObject, msgType, client) {
+export function createFIXstring(message, msgType, client, transforms) {
   let bodyArray = [];
 
   let now = new Date();
   let sendingTime = new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(),  now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds(), now.getUTCMilliseconds());
   let sendingTimeString = (1900 + sendingTime.getYear()) + pad('00', sendingTime.getMonth() + 1, true) + pad('00', sendingTime.getDate(), true) + '-' + pad('00', sendingTime.getHours(), true) + ':' + pad('00', sendingTime.getMinutes(), true) + ':' + pad('00', sendingTime.getSeconds(), true) + '.' + pad('000', sendingTime.getMilliseconds(), false);
 
+  message.SendingTime = sendingTimeString;
+  message.MsgSeqNum = client.sequenceNumber;
+  message.MsgType = getNumberForMessageType(msgType);
+  message.TargetCompID = client.options.TargetCompID;
+  message.SenderCompID = client.options.SenderCompID;
+  message.BeginString = client.options.BeginString;
+
+  let adminFields = ['MsgType', 'MsgSeqNum', 'SendingTime', 'TargetCompID', 'SenderCompID', 'BeginString', 'BodyLength'];
+
   bodyArray.push(getNumberForTag('MsgType'));
   bodyArray.push('=');
-  bodyArray.push(getNumberForMessageType(msgType));
+  bodyArray.push(message.MsgType);
   bodyArray.push(soh);
 
   bodyArray.push(getNumberForTag('MsgSeqNum'));
   bodyArray.push('=');
-  bodyArray.push(client.sequenceNumber);
+  bodyArray.push(message.MsgSeqNum);
   bodyArray.push(soh);
 
   bodyArray.push(getNumberForTag('SendingTime'));
   bodyArray.push('=');
-  bodyArray.push(sendingTimeString);
+  bodyArray.push(message.SendingTime);
   bodyArray.push(soh);
 
   bodyArray.push(getNumberForTag('TargetCompID'));
   bodyArray.push('=');
-  bodyArray.push(client.options.TargetCompID);
+  bodyArray.push(message.TargetCompID);
   bodyArray.push(soh);
 
   bodyArray.push(getNumberForTag('SenderCompID'));
   bodyArray.push('=');
-  bodyArray.push(client.options.SenderCompID);
+  bodyArray.push(message.SenderCompID);
   bodyArray.push(soh);
 
+  message = _.assign(message, transforms(message, sendingTimeString));
 
-  _.forOwn(messageObject, function (val, key) {
-    if (Array.isArray(val)) {
-      for (let i = 0; i < val.length; i++) {
+  _.forOwn(message, function (val, key) {
+    if (!_.includes(adminFields, key)) {
+      if (Array.isArray(val)) {
+        for (let i = 0; i < val.length; i++) {
+          bodyArray.push(getNumberForTag(key));
+          bodyArray.push('=');
+          bodyArray.push(val[i]);
+          bodyArray.push(soh);
+        }
+      } else {
         bodyArray.push(getNumberForTag(key));
         bodyArray.push('=');
-        bodyArray.push(val[i]);
+        bodyArray.push(val);
         bodyArray.push(soh);
       }
-    } else {
-      bodyArray.push(getNumberForTag(key));
-      bodyArray.push('=');
-      bodyArray.push(val);
-      bodyArray.push(soh);
     }
   });
 
@@ -66,7 +78,7 @@ export function createFIXstring(messageObject, msgType, client) {
 
   headerArray.push(getNumberForTag('BeginString'));
   headerArray.push('=');
-  headerArray.push(client.options.BeginString);
+  headerArray.push(message.BeginString);
   headerArray.push(soh);
 
   headerArray.push(getNumberForTag('BodyLength'));

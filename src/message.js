@@ -9,15 +9,15 @@ export default class Message {
    * @param {string} messageType - MsgType.
    * @param {Initiator} Initiator that will send this message.
  */
-  constructor(body, msgType, client) {
+  constructor(body, msgType, client, transforms) {
     if (typeof body === 'string') {
       this.body = body;
       this.message = MessageParser.parseFIXstring(body);
     } else if (typeof body === 'object') {
       this.message = body;
-      this.body = MessageBuilder.createFIXstring(body, msgType, client);
+      this.body = MessageBuilder.createFIXstring(body, msgType, client, transforms);
     } else {
-      throw body;
+      throw 'unsupported message type';
     }
   }
 
