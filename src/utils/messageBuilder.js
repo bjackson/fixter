@@ -52,7 +52,9 @@ export function createFIXstring(message, msgType, client, transforms) {
   bodyArray.push(message.SenderCompID);
   bodyArray.push(soh);
 
-  message = _.assign(message, transforms(message, sendingTimeString));
+  if (transforms) {
+    message = _.assign(message, transforms(message, sendingTimeString));
+  }
 
   _.forOwn(message, function (val, key) {
     if (!_.includes(adminFields, key)) {
