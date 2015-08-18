@@ -1,5 +1,7 @@
 # Fixter
 
+[![Join the chat at https://gitter.im/bjackson/fixter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/bjackson/fixter?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 Fixter is a Node.js library to interact with the FIX protocol.
 
 Pull requests and new tests are greatly welcomed.
